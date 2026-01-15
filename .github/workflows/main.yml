@@ -2,25 +2,30 @@ name: Build APK
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install Buildozer and Dependencies
+
+      - name: Install System Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
-          pip install --upgrade pip
-          pip install --user --upgrade buildozer cython virtualenv
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+          pip3 install --user --upgrade buildozer cython virtualenv
+
+      - name: Pre-accept Android Licenses
+        run: |
+          # هذه الخطوة هي التي ستحل مشكلة Broken pipe نهائياً
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          export PATH=$PATH:~/.local/bin
+          yes | buildozer android debug --only-sdk-licenses || true
+
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
-          # الموافقة على تراخيص أندرويد يدوياً قبل البناء
-          yes | buildozer android debug || true
-          buildozer -v android debug
+          # استخدام 'yes' هنا أيضاً لضمان عدم توقف النظام
+          yes | buildozer -v android debug
+        
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
