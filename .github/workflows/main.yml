@@ -8,14 +8,16 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
           pip3 install --user --upgrade buildozer cython virtualenv
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
+          # إنشاء ملف افتراضي للأيقونة إذا لم تكن موجودة لتجنب توقف البناء
+          [ -f icon.png ] || touch icon.png 
           buildozer -v android debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: My-App-Package
+          name: Arif-Khan-Service-App
           path: bin/*.apk
