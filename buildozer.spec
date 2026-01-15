@@ -7,7 +7,8 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 requirements = python3,kivy==2.2.1
 orientation = portrait
-android.archs = arm64-v8a, armeabi-v7a
+# قمت بتغيير هذا السطر لبناء نسخة واحدة فقط لضمان النجاح السريع
+android.archs = arm64-v8a
 android.api = 33
 android.minapi = 21
 android.ndk = 25b
