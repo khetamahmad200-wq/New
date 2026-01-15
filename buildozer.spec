@@ -1,23 +1,21 @@
 [app]
 title = Arif Khan Service
-package.name = arifapp
-package.domain = org.khetama
+package.name = arifservice
+package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy
+requirements = python3,kivy==2.2.1,pillow
 orientation = portrait
 osx.python_version = 3
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.2.1
 fullscreen = 0
 android.archs = arm64-v8a, armeabi-v7a
-android.allow_backup = True
-android.api = 31
+android.api = 33
 android.minapi = 21
 android.ndk = 25b
 android.accept_sdk_license = True
 android.skip_update = False
-android.logcat_filters = *:S python:D
 p4a.branch = master
 
 [buildozer]
