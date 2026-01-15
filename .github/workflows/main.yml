@@ -2,22 +2,24 @@ name: Build APK
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
           pip3 install --user --upgrade buildozer cython virtualenv
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
-          # إنشاء ملف افتراضي للأيقونة إذا لم تكن موجودة لتجنب توقف البناء
-          [ -f icon.png ] || touch icon.png 
+          # هذا السطر يضمن وجود أيقونة حتى لو لم ترفعيها لكي لا يفشل البناء
+          [ -f icon.png ] || touch icon.png
+          # مسح أي بناء قديم لبدء بناء نظيف
+          buildozer android clean
           buildozer -v android debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Arif-Khan-Service-App
+          name: Arif-Khan-App
           path: bin/*.apk
