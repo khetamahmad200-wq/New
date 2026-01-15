@@ -14,20 +14,18 @@ jobs:
 
       - name: Pre-accept Android Licenses
         run: |
-          # هذه الخطوة هي التي ستحل مشكلة Broken pipe نهائياً
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
           export PATH=$PATH:~/.local/bin
           yes | buildozer android debug --only-sdk-licenses || true
 
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
-          # استخدام 'yes' هنا أيضاً لضمان عدم توقف النظام
+          # مسح الملفات المؤقتة السابقة لضمان بناء نظيف
+          buildozer android clean
           yes | buildozer -v android debug
         
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Arif-Khan-Service-App
+          name: Arif-Service-App
           path: bin/*.apk
